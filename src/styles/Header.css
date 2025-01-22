@@ -1,0 +1,12 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  padding: 0px 20px;
+}
+
+.navbar-logo {
+  font-family: "Roboto Slab", serif;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
