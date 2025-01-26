@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import recycleImage from "../../assets/images/recycle.png";
-import "../../styles/Header.css";
+import "./Header.css";
 
 function Header() {
   return (

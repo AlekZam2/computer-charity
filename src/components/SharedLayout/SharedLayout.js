@@ -1,12 +1,13 @@
 import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
 import Header from "../Header/Header";
+import "./SharedLayout.css";
 
 const SharedLayout = () => {
   return (
-    <div className="container">
+    <div className="shared-container">
       <Header />
-      <main>
+      <main className="main-container">
         <Suspense>
           <Outlet />
         </Suspense>

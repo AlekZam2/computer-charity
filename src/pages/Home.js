@@ -1,7 +1,12 @@
 import React from "react";
+import HeroCarousel from "../components/Hero/HeroCarousel";
 
 function Home() {
-  return <h1>Home Page</h1>;
+  return (
+    <div>
+      <HeroCarousel />
+    </div>
+  );
 }
 
 export default Home;
