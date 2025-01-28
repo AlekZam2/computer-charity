@@ -3,7 +3,7 @@ import HeroCarousel from "../components/Hero/HeroCarousel";
 
 function Home() {
   return (
-    <div>
+    <div className="d-flex flex-column justify-content-center align-items-center">
       <HeroCarousel />
       <div>
         <h2>Idea</h2>

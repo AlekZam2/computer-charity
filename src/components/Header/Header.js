@@ -6,8 +6,8 @@ import "./Header.css";
 
 function Header() {
   return (
-    <Navbar bg="primary" data-bs-theme="dark">
-      <Container className="navbar">
+    <Navbar bg="primary" data-bs-theme="dark" expand="lg" fixed="top">
+      <Container className="d-flex justify-content-between align-items-center">
         <Navbar.Brand as={Link} to="/" className="navbar-logo">
           <img
             src={recycleImage}
@@ -16,32 +16,24 @@ function Header() {
           />
           <span>Tech for Diversity</span>
         </Navbar.Brand>
-        <Nav>
-          <Nav.Link as={Link} to="/">
-            Home
-          </Nav.Link>
-          <Nav.Link as={Link} to="/donate">
-            Donate
-          </Nav.Link>
-          <Nav.Link as={Link} to="/request">
-            Request
-          </Nav.Link>
-        </Nav>
+        <div>
+          <Navbar.Collapse id="navbar-nav">
+            <Nav>
+              <Nav.Link as={Link} to="/">
+                Home
+              </Nav.Link>
+              <Nav.Link as={Link} to="/donate">
+                Donate
+              </Nav.Link>
+              <Nav.Link as={Link} to="/request">
+                Request
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+          <Navbar.Toggle aria-controls="navbar-nav" />
+        </div>
       </Container>
     </Navbar>
-    // <nav>
-    //   <ul>
-    //     <li>
-    //       <Link to="/">Home</Link>
-    //     </li>
-    //     <li>
-    //       <Link to="/donate">Donate</Link>
-    //     </li>
-    //     <li>
-    //       <Link to="/request">Request</Link>
-    //     </li>
-    //   </ul>
-    // </nav>
   );
 }
 
