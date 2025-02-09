@@ -2,6 +2,26 @@
   padding: 0px 20px !important;
 }
 
+.navbar-nav .nav-link {
+  position: relative;
+  padding-bottom: 5px;
+  transition: color 0.3s ease-in-out;
+}
+
+.navbar-nav .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background-color: white;
+  transition: width 0.3s ease-in-out;
+}
+
+.navbar-nav .nav-link.active::after {
+  width: 100%;
+}
 .navbar-logo {
   font-family: "Roboto Slab", serif;
   display: flex;
