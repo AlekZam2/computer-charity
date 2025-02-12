@@ -1,17 +1,37 @@
+import { useEffect, useState } from "react";
 import Carousel from "react-bootstrap/Carousel";
 import Carousel1 from "../../assets/images/carousel1.jpg";
 import Carousel2 from "../../assets/images/carousel2.jpg";
+import Carousel3 from "../../assets/images/carousel3.jpg";
 import Carousel4 from "../../assets/images/carousel4.jpg";
-import Carousel5 from "../../assets/images/carousel5.jpg";
+import Carousel1Large from "../../assets/images/carousel-desktop-1.jpg";
+import Carousel2Large from "../../assets/images/carousel-desktop-2.jpg";
+import Carousel3Large from "../../assets/images/carousel-desktop-3.jpg";
+import Carousel4Large from "../../assets/images/carousel-desktop-4.jpg";
 import "./HeroCarousel.css";
 
-function UncontrolledExample() {
+function HeroCarousel() {
+  const [screenSize, setScreenSize] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setScreenSize(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const getImage = (small, large) => {
+    if (screenSize < 600) return small;
+    console.log(screenSize);
+    return large;
+  };
+
   return (
     <Carousel className="carousel">
       <Carousel.Item className="carousel-item">
         <img
           className="d-block carousel-picture"
-          src={Carousel1}
+          src={getImage(Carousel1, Carousel1Large)}
           alt="Mother with the child"
         />
         <Carousel.Caption>
@@ -24,7 +44,7 @@ function UncontrolledExample() {
       <Carousel.Item className="carousel-item">
         <img
           className="d-block carousel-picture"
-          src={Carousel2}
+          src={getImage(Carousel2, Carousel2Large)}
           alt="Two ladies with laptops"
         />
         <Carousel.Caption>
@@ -37,7 +57,7 @@ function UncontrolledExample() {
       <Carousel.Item className="carousel-item">
         <img
           className="d-block carousel-picture"
-          src={Carousel4}
+          src={getImage(Carousel3, Carousel3Large)}
           alt="Person on wheelchair with a laptop"
         />
         <Carousel.Caption>
@@ -50,7 +70,7 @@ function UncontrolledExample() {
       <Carousel.Item className="carousel-item">
         <img
           className="d-block carousel-picture"
-          src={Carousel5}
+          src={getImage(Carousel4, Carousel4Large)}
           alt="Older person with laptop"
         />
         <Carousel.Caption>
@@ -64,4 +84,4 @@ function UncontrolledExample() {
   );
 }
 
-export default UncontrolledExample;
+export default HeroCarousel;
