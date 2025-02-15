@@ -36,7 +36,7 @@ function Header() {
               active={location.pathname === "/"}
               onClick={handleLinkClick}
             >
-              Home
+              About
             </Nav.Link>
             <Nav.Link
               as={Link}
