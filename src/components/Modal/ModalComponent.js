@@ -1,5 +1,6 @@
 import React from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
+import CorporateDonationForm from "../Forms/CorporateDonationForm";
 
 function ModalComponent({ show, handleClose, formTitle, formDescription }) {
   return (
@@ -9,29 +10,16 @@ function ModalComponent({ show, handleClose, formTitle, formDescription }) {
       </Modal.Header>
       <Modal.Body>
         <p>{formDescription}</p>
-        <Form>
-          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-            <Form.Label>Email Address</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="name@example.com"
-              autoFocus
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-            <Form.Label>Message</Form.Label>
-            <Form.Control as="textarea" rows={3} />
-          </Form.Group>
-        </Form>
+        <CorporateDonationForm handleClose={handleClose} />
       </Modal.Body>
-      <Modal.Footer>
+      {/* <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
           Close
         </Button>
         <Button variant="primary" onClick={handleClose}>
           Submit
         </Button>
-      </Modal.Footer>
+      </Modal.Footer> */}
     </Modal>
   );
 }

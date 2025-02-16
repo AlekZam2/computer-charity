@@ -39,7 +39,7 @@ function Footer() {
               <h4>Our Contact Details</h4>
               <p>
                 <strong>Email: </strong>
-                <a href="mailto:contact@example.com">
+                <a className="footer-link" href="mailto:contact@example.com">
                   contact@computer-charity.com
                 </a>
               </p>
@@ -49,6 +49,7 @@ function Footer() {
               <p>
                 <strong>Address: </strong>
                 <a
+                  className="footer-link"
                   href="https://www.google.com/maps?q=University+of+Huddersfield,+Queensgate,+Huddersfield+HD1+3DH,+UK"
                   target="_blank"
                   rel="noreferrer"
