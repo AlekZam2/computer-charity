@@ -1,7 +1,15 @@
 import React, { useState } from "react";
 import { Accordion, Form, Button } from "react-bootstrap";
+
+// Example AssetTypesList definition (replace with actual data or import)
+
 import { submitDonation } from "../../api/donationApi";
 import CustomToast from "../CustomToast/CustomToast";
+import {
+  AssetTypesList,
+  ComputerConditionList,
+  AssetAges,
+} from "../../helpers/Lists";
 
 function CorporateDonationForm({ handleClose }) {
   const [validated, setValidated] = useState(false);
@@ -26,13 +34,22 @@ function CorporateDonationForm({ handleClose }) {
     postcode: "",
   };
   const newDonationData = {
-    deviceQuantity: "",
-    technicalSpecifications: "",
+    devices: [],
+    otherInformation: "",
+  };
+  const newDeviceData = {
+    id: 1,
+    assetType: "",
+    make: "",
+    model: "",
+    age: "",
+    condition: "",
     otherInformation: "",
   };
   const [userData, setUserData] = useState(newUserData);
   const [addressData, setAddressData] = useState(newAddressData);
   const [donationData, setDonationData] = useState(newDonationData);
+  const [devicesData, setDevicesData] = useState([]);
 
   const handleChange = (event) => {
     const { id, value } = event.target;
@@ -50,6 +67,15 @@ function CorporateDonationForm({ handleClose }) {
         [id]: value,
       }));
     }
+    if (id === "deviceQuantity") {
+      const quantity = parseInt(value, 10) || 0;
+      setDevicesData(
+        Array.from({ length: quantity }, (_, index) => ({
+          ...newDeviceData,
+          id: index + 1,
+        }))
+      );
+    }
 
     if (id in newDonationData) {
       setDonationData((prevData) => ({
@@ -58,6 +84,12 @@ function CorporateDonationForm({ handleClose }) {
       }));
     }
   };
+  const handleDeviceChange = (index, field, value) => {
+    const updatedDevices = [...devicesData];
+    updatedDevices[index][field] = value;
+    setDevicesData(updatedDevices);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -202,26 +234,102 @@ function CorporateDonationForm({ handleClose }) {
                   Please enter a valid number of devices.
                 </Form.Control.Feedback>
               </Form.Group>
-              <Form.Group className="mb-3" controlId="technicalSpecifications">
-                <Form.Label className="d-block">
-                  Technical Specification
-                </Form.Label>
-                <Form.Text>
-                  Please specify the asset type (phone, laptop, or PC), along
-                  with the make, model, age, and operating system if known.
-                </Form.Text>
-                <Form.Control
-                  as="textarea"
-                  rows={3}
-                  value={donationData.technicalSpecifications}
-                  required
-                  onChange={handleChange}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Technical Specification is required. Please provide details
-                  about the asset type, make, model, age, and OS.
-                </Form.Control.Feedback>
-              </Form.Group>
+              {devicesData.map((device, index) => (
+                <div key={device.id} className="border p-3 mb-3">
+                  <h5>Device {device.id}</h5>
+                  <Form.Group controlId={`assetType-${index}`}>
+                    <Form.Label>Type</Form.Label>
+                    <Form.Select
+                      required
+                      value={device.assetType}
+                      onChange={(e) =>
+                        handleDeviceChange(index, "assetType", e.target.value)
+                      }
+                    >
+                      <option value="">Select type</option>
+                      {AssetTypesList.map((type, i) => (
+                        <option key={i} value={type}>
+                          {type}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </Form.Group>
+                  <Form.Group controlId={`make-${index}`}>
+                    <Form.Label>Make</Form.Label>
+                    <Form.Control
+                      type="text"
+                      required
+                      value={device.make}
+                      onChange={(e) =>
+                        handleDeviceChange(index, "make", e.target.value)
+                      }
+                    />
+                  </Form.Group>
+
+                  <Form.Group controlId={`model-${index}`}>
+                    <Form.Label>Model</Form.Label>
+                    <Form.Control
+                      type="text"
+                      required
+                      value={device.model}
+                      onChange={(e) =>
+                        handleDeviceChange(index, "model", e.target.value)
+                      }
+                    />
+                  </Form.Group>
+                  <Form.Group controlId={`age-${index}`}>
+                    <Form.Label>Age</Form.Label>
+                    <Form.Select
+                      required
+                      value={device.age}
+                      onChange={(e) =>
+                        handleDeviceChange(index, "age", e.target.value)
+                      }
+                    >
+                      <option value="">Select age</option>
+                      {AssetAges.map((age, i) => (
+                        <option key={i} value={age}>
+                          {age}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </Form.Group>
+
+                  <Form.Group controlId={`condition-${index}`}>
+                    <Form.Label>Condition</Form.Label>
+                    <Form.Select
+                      required
+                      value={device.condition}
+                      onChange={(e) =>
+                        handleDeviceChange(index, "condition", e.target.value)
+                      }
+                    >
+                      <option value="">Select condition</option>
+                      {ComputerConditionList.map((condition, i) => (
+                        <option key={i} value={condition}>
+                          {condition}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </Form.Group>
+                  <Form.Group controlId={`otherInformation-${index}`}>
+                    <Form.Label>Other information</Form.Label>
+                    <Form.Control
+                      type="text"
+                      required
+                      value={device.otherInformation}
+                      onChange={(e) =>
+                        handleDeviceChange(
+                          index,
+                          "otherInformation",
+                          e.target.value
+                        )
+                      }
+                    />
+                  </Form.Group>
+                </div>
+              ))}
+
               <Form.Group className="mb-3" controlId="otherInformation">
                 <Form.Label className="d-block">Other Information</Form.Label>
                 <Form.Text>Share any additional details here.</Form.Text>
