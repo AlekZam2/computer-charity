@@ -7,7 +7,7 @@ export const ComputerConditionList = [
   "For Parts",
 ];
 
-export const AssetTypesList = [
+export const DeviceTypesList = [
   "Desktop Computer",
   "External Hard Drive",
   "Headphones",

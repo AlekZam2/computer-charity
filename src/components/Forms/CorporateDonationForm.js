@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Accordion, Form, Button } from "react-bootstrap";
+import "./Forms.css";
 
 // Example AssetTypesList definition (replace with actual data or import)
 
 import { submitDonation } from "../../api/donationApi";
 import CustomToast from "../CustomToast/CustomToast";
 import {
-  AssetTypesList,
+  DeviceTypesList,
   ComputerConditionList,
   AssetAges,
 } from "../../helpers/Lists";
@@ -26,6 +27,10 @@ function CorporateDonationForm({ handleClose }) {
     jobTitle: "",
     email: "",
     phone: "",
+    role: "donor",
+    address: "",
+    password: "",
+    requiresPassword: false,
   };
   const newAddressData = {
     addressLine1: "",
@@ -39,17 +44,19 @@ function CorporateDonationForm({ handleClose }) {
   };
   const newDeviceData = {
     id: 1,
-    assetType: "",
+    deviceType: "",
     make: "",
     model: "",
     age: "",
     condition: "",
     otherInformation: "",
+    status: "Pending",
   };
   const [userData, setUserData] = useState(newUserData);
   const [addressData, setAddressData] = useState(newAddressData);
   const [donationData, setDonationData] = useState(newDonationData);
   const [devicesData, setDevicesData] = useState([]);
+  const [deviceQuantity, setDeviceQuantity] = useState(0);
 
   const handleChange = (event) => {
     const { id, value } = event.target;
@@ -59,6 +66,7 @@ function CorporateDonationForm({ handleClose }) {
         ...prevData,
         [id]: value,
       }));
+      console.log("User data updated:", userData);
     }
 
     if (id in newAddressData) {
@@ -69,6 +77,7 @@ function CorporateDonationForm({ handleClose }) {
     }
     if (id === "deviceQuantity") {
       const quantity = parseInt(value, 10) || 0;
+      setDeviceQuantity(quantity);
       setDevicesData(
         Array.from({ length: quantity }, (_, index) => ({
           ...newDeviceData,
@@ -103,9 +112,12 @@ function CorporateDonationForm({ handleClose }) {
     setValidated(true);
     try {
       const donationPayload = {
-        user: userData,
-        address: addressData,
-        donation: donationData,
+        user: { ...userData, address: Object.values(addressData).join(", ") },
+        donation: {
+          donationType: "device",
+          devices: devicesData,
+          otherInformation: donationData.otherInformation,
+        },
       };
       console.log("Donation submitted:", donationPayload);
       await submitDonation(donationPayload);
@@ -237,17 +249,17 @@ function CorporateDonationForm({ handleClose }) {
               {devicesData.map((device, index) => (
                 <div key={device.id} className="border p-3 mb-3">
                   <h5>Device {device.id}</h5>
-                  <Form.Group controlId={`assetType-${index}`}>
+                  <Form.Group controlId={`deviceType-${index}`}>
                     <Form.Label>Type</Form.Label>
                     <Form.Select
                       required
                       value={device.assetType}
                       onChange={(e) =>
-                        handleDeviceChange(index, "assetType", e.target.value)
+                        handleDeviceChange(index, "deviceType", e.target.value)
                       }
                     >
                       <option value="">Select type</option>
-                      {AssetTypesList.map((type, i) => (
+                      {DeviceTypesList.map((type, i) => (
                         <option key={i} value={type}>
                           {type}
                         </option>
@@ -258,7 +270,6 @@ function CorporateDonationForm({ handleClose }) {
                     <Form.Label>Make</Form.Label>
                     <Form.Control
                       type="text"
-                      required
                       value={device.make}
                       onChange={(e) =>
                         handleDeviceChange(index, "make", e.target.value)
@@ -270,7 +281,6 @@ function CorporateDonationForm({ handleClose }) {
                     <Form.Label>Model</Form.Label>
                     <Form.Control
                       type="text"
-                      required
                       value={device.model}
                       onChange={(e) =>
                         handleDeviceChange(index, "model", e.target.value)
@@ -280,7 +290,6 @@ function CorporateDonationForm({ handleClose }) {
                   <Form.Group controlId={`age-${index}`}>
                     <Form.Label>Age</Form.Label>
                     <Form.Select
-                      required
                       value={device.age}
                       onChange={(e) =>
                         handleDeviceChange(index, "age", e.target.value)
@@ -298,7 +307,6 @@ function CorporateDonationForm({ handleClose }) {
                   <Form.Group controlId={`condition-${index}`}>
                     <Form.Label>Condition</Form.Label>
                     <Form.Select
-                      required
                       value={device.condition}
                       onChange={(e) =>
                         handleDeviceChange(index, "condition", e.target.value)
@@ -316,7 +324,6 @@ function CorporateDonationForm({ handleClose }) {
                     <Form.Label>Other information</Form.Label>
                     <Form.Control
                       type="text"
-                      required
                       value={device.otherInformation}
                       onChange={(e) =>
                         handleDeviceChange(
@@ -342,65 +349,67 @@ function CorporateDonationForm({ handleClose }) {
               </Form.Group>
             </Accordion.Body>
           </Accordion.Item>
-          <Accordion.Item eventKey="2">
-            <Accordion.Header>Address</Accordion.Header>
-            <Accordion.Body>
-              <Form.Group controlId="address" className="mb-3">
-                <Form.Label className="d-block">Address</Form.Label>
-                <Form.Text className="d-block mb-3">
-                  Sharing your company address helps us coordinate logistics and
-                  arrange our collection service efficiently.
-                </Form.Text>
-              </Form.Group>
-              <Form.Group controlId="addressLine1" className="mb-3">
-                <Form.Label>Address Line 1</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={addressData.addressLine1}
-                  required
-                  onChange={handleChange}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Address Line 1 is required.
-                </Form.Control.Feedback>
-              </Form.Group>
+          {deviceQuantity >= 10 && (
+            <Accordion.Item eventKey="2">
+              <Accordion.Header className="blue-100">Address</Accordion.Header>
+              <Accordion.Body>
+                <Form.Group controlId="address" className="mb-3">
+                  <Form.Label className="d-block">Address</Form.Label>
+                  <Form.Text className="d-block mb-3">
+                    Sharing your company address helps us coordinate logistics
+                    and arrange our collection service efficiently.
+                  </Form.Text>
+                </Form.Group>
+                <Form.Group controlId="addressLine1" className="mb-3">
+                  <Form.Label>Address Line 1</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={addressData.addressLine1}
+                    required
+                    onChange={handleChange}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Address Line 1 is required.
+                  </Form.Control.Feedback>
+                </Form.Group>
 
-              <Form.Group controlId="addressLine2" className="mb-3">
-                <Form.Label>Address Line 2</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={addressData.addressLine2}
-                  onChange={handleChange}
-                />
-              </Form.Group>
+                <Form.Group controlId="addressLine2" className="mb-3">
+                  <Form.Label>Address Line 2</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={addressData.addressLine2}
+                    onChange={handleChange}
+                  />
+                </Form.Group>
 
-              <Form.Group controlId="city" className="mb-3">
-                <Form.Label>City / Town</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={addressData.city}
-                  required
-                  onChange={handleChange}
-                />
-                <Form.Control.Feedback type="invalid">
-                  City / Town is required.
-                </Form.Control.Feedback>
-              </Form.Group>
+                <Form.Group controlId="city" className="mb-3">
+                  <Form.Label>City / Town</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={addressData.city}
+                    required
+                    onChange={handleChange}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    City / Town is required.
+                  </Form.Control.Feedback>
+                </Form.Group>
 
-              <Form.Group controlId="postcode" className="mb-3">
-                <Form.Label>Postcode</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={addressData.postcode}
-                  required
-                  onChange={handleChange}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Postcode is required.
-                </Form.Control.Feedback>
-              </Form.Group>
-            </Accordion.Body>
-          </Accordion.Item>
+                <Form.Group controlId="postcode" className="mb-3">
+                  <Form.Label>Postcode</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={addressData.postcode}
+                    required
+                    onChange={handleChange}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Postcode is required.
+                  </Form.Control.Feedback>
+                </Form.Group>
+              </Accordion.Body>
+            </Accordion.Item>
+          )}
         </Accordion>
 
         <Button variant="secondary" onClick={handleClose}>

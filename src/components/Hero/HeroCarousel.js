@@ -22,7 +22,6 @@ function HeroCarousel() {
 
   const getImage = (small, large) => {
     if (screenSize < 600) return small;
-    console.log(screenSize);
     return large;
   };
 
