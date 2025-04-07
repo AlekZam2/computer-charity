@@ -1,23 +1,28 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
 import SharedLayout from "./components/SharedLayout/SharedLayout";
 import Home from "./pages/Home";
 import Donate from "./pages/Donate";
 import Request from "./pages/Request";
 import NotFound from "./pages/NotFound";
 import "./App.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 function App() {
   return (
     <div>
-      <Routes>
-        <Route path="/" element={<SharedLayout />}>
-          <Route index element={<Home />} />
-          <Route path="donate" element={<Donate />} />
-          <Route path="request" element={<Request />} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<SharedLayout />}>
+            <Route index element={<Home />} />
+            <Route path="donate" element={<Donate />} />
+            <Route path="request" element={<Request />} />
+            <Route path="admin" element={<div>Admin Dashboard</div>} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        </Routes>
+      </AuthProvider>
     </div>
   );
 }

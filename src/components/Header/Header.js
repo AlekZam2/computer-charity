@@ -1,11 +1,14 @@
-import React, { useState } from "react";
-import { Container, Nav, Navbar } from "react-bootstrap";
+import React, { useState, useContext } from "react";
+import { Container, Nav, Navbar, Button } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
+import LoginButton from "../LoginButton/LoginButton";
 import recycleImage from "../../assets/images/recycle.png";
 import "./Header.css";
 
 function Header() {
   const location = useLocation();
+  const { isLoggedIn, role, logout } = useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLinkClick = () => {
@@ -13,6 +16,10 @@ function Header() {
   };
   const handleToggleClick = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+  const handleLogout = () => {
+    logout();
+    window.location.href = "/";
   };
 
   return (
@@ -54,8 +61,27 @@ function Header() {
             >
               Request
             </Nav.Link>
+            {role === "admin" && (
+              <Nav.Link
+                as={Link}
+                to="/admin"
+                active={location.pathname === "/admin"}
+                onClick={handleLinkClick}
+              >
+                Admin Dashboard
+              </Nav.Link>
+            )}
           </Nav>
         </Navbar.Collapse>
+        {isLoggedIn ? (
+          <Button variant="primary" onClick={handleLogout}>
+            <i class="bi bi-box-arrow-in-left me-1"></i>
+            {/* <i class="bi bi-arrow-left-square-fill me-2"></i> */}
+            Logout
+          </Button>
+        ) : (
+          <LoginButton />
+        )}
       </Container>
     </Navbar>
   );
