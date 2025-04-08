@@ -5,6 +5,7 @@ import SharedLayout from "./components/SharedLayout/SharedLayout";
 import Home from "./pages/Home";
 import Donate from "./pages/Donate";
 import Request from "./pages/Request";
+import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
 import "./App.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -18,7 +19,7 @@ function App() {
             <Route index element={<Home />} />
             <Route path="donate" element={<Donate />} />
             <Route path="request" element={<Request />} />
-            <Route path="admin" element={<div>Admin Dashboard</div>} />
+            <Route path="admin" element={<AdminDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

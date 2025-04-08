@@ -75,8 +75,7 @@ function Header() {
         </Navbar.Collapse>
         {isLoggedIn ? (
           <Button variant="primary" onClick={handleLogout}>
-            <i class="bi bi-box-arrow-in-left me-1"></i>
-            {/* <i class="bi bi-arrow-left-square-fill me-2"></i> */}
+            <i className="bi bi-box-arrow-in-left me-1"></i>
             Logout
           </Button>
         ) : (

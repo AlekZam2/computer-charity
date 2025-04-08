@@ -48,7 +48,7 @@ const LoginButton = () => {
     <>
       <Button variant="primary" onClick={handleShow}>
         <span className="me-1">Login</span>
-        <i class="bi bi-box-arrow-in-right"></i>
+        <i className="bi bi-box-arrow-in-right"></i>
       </Button>
 
       <Modal show={show} onHide={handleClose} centered>

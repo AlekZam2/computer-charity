@@ -34,3 +34,14 @@ export const AssetAges = [
   "6-10 years",
   "More than 10 years",
 ];
+export const DeviceStatuses = [
+  "Pending",
+  "Received",
+  "In Processing",
+  "Available",
+  "Allocated to Applicant",
+  "Delivered to Applicant",
+  "In Use",
+  "Returned",
+  "Disposed",
+];
