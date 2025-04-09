@@ -29,7 +29,7 @@ const RequestsTab = () => {
     };
 
     fetchDonations();
-  }, []);
+  }, [devices]);
 
   return (
     <div>

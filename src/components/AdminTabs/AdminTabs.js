@@ -5,7 +5,7 @@ import RequestsTab from "./RequestsTab";
 import DevicesTab from "./DevicesTab";
 
 const AdminTabs = () => {
-  const [key, setKey] = useState("donations");
+  const [key, setKey] = useState("devices");
 
   return (
     <div className="container mt-4">
