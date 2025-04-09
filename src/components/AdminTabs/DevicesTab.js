@@ -19,16 +19,17 @@ const DevicesTab = () => {
       (selectedDevice === "All" || donation.deviceType === selectedDevice) &&
       (selectedStatus === "All" || donation.status === selectedStatus)
   );
+
+  // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = [...filteredDonations].slice(
     indexOfFirstItem,
     indexOfLastItem
   );
-
   const totalPages = Math.ceil(filteredDonations.length / itemsPerPage);
-
   const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
+
   useEffect(() => {
     const fetchDonations = async () => {
       try {

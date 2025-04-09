@@ -1,9 +1,10 @@
 import React from "react";
 import { Toast, ToastContainer } from "react-bootstrap";
+import "./CustomToast.css";
 
 const CustomToast = ({ show, onClose, message, variant = "success" }) => {
   return (
-    <ToastContainer position="bottom-end" className="p-3">
+    <ToastContainer className="p-3 toast-container">
       <Toast bg={variant} show={show} onClose={onClose} delay={3000} autohide>
         <Toast.Header>
           <strong className="me-auto">

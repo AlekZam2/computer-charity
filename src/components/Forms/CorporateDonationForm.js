@@ -66,7 +66,6 @@ function CorporateDonationForm({ handleClose }) {
         ...prevData,
         [id]: value,
       }));
-      console.log("User data updated:", userData);
     }
 
     if (id in newAddressData) {
