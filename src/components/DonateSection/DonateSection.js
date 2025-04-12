@@ -97,6 +97,14 @@ function DonateSection() {
           </p>
           <Button
             variant="primary"
+            href="https://ko-fi.com/techfordiversity"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Donate Financially on Ko-fi
+          </Button>
+          {/* <Button
+            variant="primary"
             onClick={() =>
               handleShow(
                 "Financial Donation",
@@ -105,7 +113,7 @@ function DonateSection() {
             }
           >
             Donate Financially
-          </Button>
+          </Button> */}
         </li>
       </ul>
       <ModalComponent

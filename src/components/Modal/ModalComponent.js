@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal } from "react-bootstrap";
 import CorporateDonationForm from "../Forms/CorporateDonationForm";
+import IndividualDonationForm from "../Forms/IndividualDonationForm";
 
 function ModalComponent({ show, handleClose, formTitle, formDescription }) {
   return (
@@ -10,16 +11,13 @@ function ModalComponent({ show, handleClose, formTitle, formDescription }) {
       </Modal.Header>
       <Modal.Body>
         <p>{formDescription}</p>
-        <CorporateDonationForm handleClose={handleClose} />
+        {formTitle.includes("Corporate") && (
+          <CorporateDonationForm handleClose={handleClose} />
+        )}
+        {formTitle.includes("Individual") && (
+          <IndividualDonationForm handleClose={handleClose} />
+        )}
       </Modal.Body>
-      {/* <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          Close
-        </Button>
-        <Button variant="primary" onClick={handleClose}>
-          Submit
-        </Button>
-      </Modal.Footer> */}
     </Modal>
   );
 }

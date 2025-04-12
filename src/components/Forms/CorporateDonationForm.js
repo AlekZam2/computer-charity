@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Accordion, Form, Button } from "react-bootstrap";
 import "./Forms.css";
 
-// Example AssetTypesList definition (replace with actual data or import)
-
 import { submitDonation } from "../../api/donationApi";
 import CustomToast from "../CustomToast/CustomToast";
 import {
