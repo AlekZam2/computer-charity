@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import React from "react";
+import { useScreenSize } from "../../context/ScreenSizeContext";
 import Carousel from "react-bootstrap/Carousel";
 import Carousel1 from "../../assets/images/carousel1.jpg";
 import Carousel2 from "../../assets/images/carousel2.jpg";
@@ -11,14 +12,7 @@ import Carousel4Large from "../../assets/images/carousel-desktop-4.jpg";
 import "./HeroCarousel.css";
 
 function HeroCarousel() {
-  const [screenSize, setScreenSize] = useState(window.innerWidth);
-
-  useEffect(() => {
-    const handleResize = () => setScreenSize(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const screenSize = useScreenSize();
 
   const getImage = (small, large) => {
     if (screenSize < 600) return small;

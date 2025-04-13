@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
+import { ScreenSizeProvider } from "./context/ScreenSizeContext";
 import SharedLayout from "./components/SharedLayout/SharedLayout";
 import Home from "./pages/Home";
 import Donate from "./pages/Donate";
@@ -14,15 +15,17 @@ function App() {
   return (
     <div>
       <AuthProvider>
-        <Routes>
-          <Route path="/" element={<SharedLayout />}>
-            <Route index element={<Home />} />
-            <Route path="donate" element={<Donate />} />
-            <Route path="request" element={<Request />} />
-            <Route path="admin" element={<AdminDashboard />} />
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
+        <ScreenSizeProvider>
+          <Routes>
+            <Route path="/" element={<SharedLayout />}>
+              <Route index element={<Home />} />
+              <Route path="donate" element={<Donate />} />
+              <Route path="request" element={<Request />} />
+              <Route path="admin" element={<AdminDashboard />} />
+              <Route path="*" element={<NotFound />} />
+            </Route>
+          </Routes>
+        </ScreenSizeProvider>
       </AuthProvider>
     </div>
   );

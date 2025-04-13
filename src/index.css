@@ -35,3 +35,14 @@ a {
   font-style: inherit;
   color: inherit;
 }
+.hero-picture {
+  max-height: 70vh;
+  width: auto;
+}
+.section-picture {
+  width: 300px;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1rem;
+}

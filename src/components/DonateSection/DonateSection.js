@@ -22,7 +22,7 @@ function DonateSection() {
       <ul className="section-container d-flex flex-row flex-wrap justify-content-center align-items-stretch gap-5">
         <li className="d-flex flex-column align-items-center section-item">
           <img
-            className="donateSection-picture"
+            className="section-picture"
             src={donateCorporate}
             alt="Laptops on the table in the office"
           />
@@ -53,7 +53,7 @@ function DonateSection() {
         </li>
         <li className="d-flex flex-column align-items-center section-item">
           <img
-            className="donateSection-picture"
+            className="section-picture"
             src={donateIndividual}
             alt="Woman with laptop"
           />
@@ -83,7 +83,7 @@ function DonateSection() {
         </li>
         <li className="d-flex flex-column align-items-center section-item">
           <img
-            className="donateSection-picture"
+            className="section-picture"
             src={donateFinancial}
             alt="Box with donation lable in woman hands"
           />

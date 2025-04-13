@@ -1,13 +1,15 @@
 import React from "react";
-import donateHero from "../../assets/images/donateHero.jpg";
-import "./DonateHero.css";
+import { useScreenSize } from "../../context/ScreenSizeContext";
+import donateHero from "../../assets/images/donate-hero.jpg";
+import donateHeroLarge from "../../assets/images/donate-hero-landscape.jpg";
 
 function DonateHero() {
+  const screenSize = useScreenSize();
   return (
     <div className="d-flex flex-column justify-content-center align-items-center mb-4">
       <img
-        className="donateHero-picture"
-        src={donateHero}
+        className="hero-picture"
+        src={screenSize < 600 ? donateHero : donateHeroLarge}
         alt="laptops on boxes"
       />
       <h2>Donate computers and laptops to charity</h2>
@@ -31,7 +33,7 @@ function DonateHero() {
         bridging the digital divide, and creating a meaningful environmental and
         social impact.
       </p>
-      <p>Let’s transform lives together!</p>
+      <b>Let’s transform lives together!</b>
     </div>
   );
 }
