@@ -2,6 +2,7 @@ import React from "react";
 import { Modal } from "react-bootstrap";
 import CorporateDonationForm from "../Forms/CorporateDonationForm";
 import IndividualDonationForm from "../Forms/IndividualDonationForm";
+import DeviceRequestForm from "../Forms/DeviceRequestForm";
 
 function ModalComponent({ show, handleClose, formTitle, formDescription }) {
   return (
@@ -16,6 +17,9 @@ function ModalComponent({ show, handleClose, formTitle, formDescription }) {
         )}
         {formTitle.includes("Individual") && (
           <IndividualDonationForm handleClose={handleClose} />
+        )}
+        {formTitle.includes("Request") && (
+          <DeviceRequestForm handleClose={handleClose} />
         )}
       </Modal.Body>
     </Modal>

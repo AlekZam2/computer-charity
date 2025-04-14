@@ -307,12 +307,14 @@ function IndividualDonationForm({ handleClose }) {
           </Accordion.Item>
         </Accordion>
 
-        <Button variant="secondary" onClick={handleClose}>
-          Close
-        </Button>
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>
+        <div className="d-flex justify-content-end gap-3 mt-3">
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </div>
       </Form>
     </div>
   );

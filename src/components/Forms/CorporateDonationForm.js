@@ -11,13 +11,6 @@ import {
 } from "../../helpers/Lists";
 
 function CorporateDonationForm({ handleClose }) {
-  const [validated, setValidated] = useState(false);
-  const [toast, setToast] = useState({
-    show: false,
-    message: "",
-    variant: "success",
-  });
-
   const newUserData = {
     firstName: "",
     lastName: "",
@@ -55,6 +48,12 @@ function CorporateDonationForm({ handleClose }) {
   const [donationData, setDonationData] = useState(newDonationData);
   const [devicesData, setDevicesData] = useState([]);
   const [deviceQuantity, setDeviceQuantity] = useState(0);
+  const [validated, setValidated] = useState(false);
+  const [toast, setToast] = useState({
+    show: false,
+    message: "",
+    variant: "success",
+  });
 
   const handleChange = (event) => {
     const { id, value } = event.target;
@@ -102,8 +101,8 @@ function CorporateDonationForm({ handleClose }) {
 
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
-      setValidated(true);
-      return;
+      setValidated(true); // Bootstrap will now show the validation errors
+      return; // Don't proceed
     }
 
     setValidated(true);
@@ -409,12 +408,14 @@ function CorporateDonationForm({ handleClose }) {
           )}
         </Accordion>
 
-        <Button variant="secondary" onClick={handleClose}>
-          Close
-        </Button>
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>
+        <div className="d-flex justify-content-end gap-3 mt-3">
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </div>
       </Form>
     </div>
   );
