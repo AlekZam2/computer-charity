@@ -35,14 +35,14 @@ const DevicesTab = () => {
       try {
         const response = await getDevices();
         setDevices(response);
-        console.log("Fetched devices:", devices);
+        console.log("Fetched devices:", response);
       } catch (error) {
         console.error("Error fetching donations:", error);
       }
     };
 
     fetchDonations();
-  }, [devices]);
+  }, []);
 
   return (
     <div>

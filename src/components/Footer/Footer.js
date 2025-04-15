@@ -8,8 +8,8 @@ function Footer() {
   return (
     <footer className="bg-dark text-light py-4">
       <h3 className="footer-slogan text-center">
-        <span>Tech for Diversity.</span> Empowering comunities one device at a
-        time.
+        <span>Tech for Diversity.</span> Empowering communities - one device at
+        a time.
       </h3>
       <Container className="py-5">
         <Row className="text-center mb-4">
@@ -25,8 +25,8 @@ function Footer() {
               <h4>Our Contact Details</h4>
               <p>
                 <strong>Email: </strong>
-                <a className="footer-link" href="mailto:contact@example.com">
-                  contact@computer-charity.com
+                <a className="footer-link" href="techfordiversity@gmail.com">
+                  techfordiversity@gmail.com
                 </a>
               </p>
               <p>

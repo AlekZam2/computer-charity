@@ -143,8 +143,8 @@ function DeviceRequestForm({ handleClose }) {
           <Form.Label>What type of device do you need?</Form.Label>
           <Form.Control
             type="text"
-            name="useCase"
-            value={requestData.useCase}
+            name="deviceType"
+            value={requestData.deviceType}
             onChange={handleChange}
             placeholder="Laptop, desktop computer, tablet, etc."
             required

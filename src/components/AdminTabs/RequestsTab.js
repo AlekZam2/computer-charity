@@ -1,54 +1,46 @@
 import React, { useState, useEffect } from "react";
-import { Table, Form, Row, Col } from "react-bootstrap";
-import { DeviceTypesList, DeviceStatuses } from "../../helpers/Lists";
-import { getDevices } from "../../api/devicesApi";
+import { Table, Form, Row, Col, Pagination } from "react-bootstrap";
+import { RequestStatuses, formatDate } from "../../helpers";
+import { getRequests } from "../../api/requestApi";
 
 const RequestsTab = () => {
-  const [devices, setDevices] = useState([]);
-  const [selectedDevice, setSelectedDevice] = useState("All");
+  const [requests, setRequests] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("All");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
-  const uniqueDeviceTypes = ["All", ...DeviceTypesList];
-  const uniqueStatuses = ["All", ...DeviceStatuses];
+  const uniqueStatuses = ["All", ...RequestStatuses];
 
   // Apply filters
-  const filteredDonations = devices.filter(
-    (donation) =>
-      (selectedDevice === "All" || donation.deviceType === selectedDevice) &&
-      (selectedStatus === "All" || donation.status === selectedStatus)
+  const filteredRequests = requests.filter(
+    (request) => selectedStatus === "All" || request.status === selectedStatus
   );
+  // Pagination logic
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = [...filteredRequests].slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+  const totalPages = Math.ceil(filteredRequests.length / itemsPerPage);
+  const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
   useEffect(() => {
-    const fetchDonations = async () => {
+    const fetchRequests = async () => {
       try {
-        const response = await getDevices();
-        setDevices(response);
-        console.log("Fetched devices:", devices);
+        const response = await getRequests();
+        setRequests(response);
+        console.log("Fetched requests:", response);
       } catch (error) {
-        console.error("Error fetching donations:", error);
+        console.error("Error fetching requests:", error);
       }
     };
 
-    fetchDonations();
-  }, [devices]);
+    fetchRequests();
+  }, []);
 
   return (
     <div>
       <Row className="mb-3">
-        <Col md={6}>
-          <Form.Group>
-            <Form.Label>Filter by Device Type</Form.Label>
-            <Form.Select
-              value={selectedDevice}
-              onChange={(e) => setSelectedDevice(e.target.value)}
-            >
-              {uniqueDeviceTypes.map((type) => (
-                <option key={type} value={type}>
-                  {type}
-                </option>
-              ))}
-            </Form.Select>
-          </Form.Group>
-        </Col>
         <Col md={6}>
           <Form.Group>
             <Form.Label>Filter by Status</Form.Label>
@@ -71,45 +63,71 @@ const RequestsTab = () => {
         <thead>
           <tr>
             <th>Status</th>
-            <th>Donor</th>
-            <th>Company</th>
-            <th>Donation Type</th>
+            <th>Date created</th>
+            <th>Requester</th>
+            <th>Requester Email</th>
+            <th>Requester Phone</th>
             <th>Device Type</th>
-            <th>Make</th>
-            <th>Model</th>
-            <th>Age</th>
-            <th>Condition</th>
-            <th>Other Info</th>
+            <th>Purpose</th>
+            <th>Reason</th>
           </tr>
         </thead>
         <tbody>
-          {filteredDonations.length > 0 ? (
-            filteredDonations.map((donation) => (
-              <tr key={donation._id}>
-                <td>{donation.status}</td>
+          {currentItems.length > 0 ? (
+            currentItems.map((request) => (
+              <tr key={request._id}>
+                <td>{request.status}</td>
+                <td>{formatDate(request.createdAt)}</td>
                 <td>
-                  {donation.donationId.userId.firstName}{" "}
-                  {donation.donationId.userId.lastName}
+                  {request.userId.firstName} {request.userId.lastName}
                 </td>
-                <td>{donation.donationId.userId.companyName}</td>
-                <td>{donation.donationId.donationType}</td>
-                <td>{donation.deviceType}</td>
-                <td>{donation.make}</td>
-                <td>{donation.model}</td>
-                <td>{donation.age}</td>
-                <td>{donation.condition}</td>
-                <td>{donation.otherInformation}</td>
+                <td>{request.userId.email}</td>
+                <td>{request.userId.phone}</td>
+                <td>{request.deviceType}</td>
+                <td>{request.useCase}</td>
+                <td>{request.reason}</td>
               </tr>
             ))
           ) : (
             <tr>
               <td colSpan="10" className="text-center">
-                No donations match the filters.
+                No requests match the filters.
               </td>
             </tr>
           )}
         </tbody>
       </Table>
+      {totalPages > 1 && (
+        <Pagination className="justify-content-center">
+          <Pagination.First
+            onClick={() => setCurrentPage(1)}
+            disabled={currentPage === 1}
+          />
+          <Pagination.Prev
+            onClick={() => setCurrentPage(currentPage - 1)}
+            disabled={currentPage === 1}
+          />
+
+          {[...Array(totalPages).keys()].map((page) => (
+            <Pagination.Item
+              key={page + 1}
+              active={page + 1 === currentPage}
+              onClick={() => handlePageChange(page + 1)}
+            >
+              {page + 1}
+            </Pagination.Item>
+          ))}
+
+          <Pagination.Next
+            onClick={() => setCurrentPage(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          />
+          <Pagination.Last
+            onClick={() => setCurrentPage(totalPages)}
+            disabled={currentPage === totalPages}
+          />
+        </Pagination>
+      )}
     </div>
   );
 };

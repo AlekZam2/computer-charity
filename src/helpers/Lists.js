@@ -45,3 +45,5 @@ export const DeviceStatuses = [
   "Returned",
   "Disposed",
 ];
+
+export const RequestStatuses = ["Pending", "Approved", "Rejected", "Completed"];
