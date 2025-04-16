@@ -23,13 +23,9 @@ export const getRequests = async () => {
 
 export const updateRequest = async (requestData) => {
   try {
-    await axios.put(
-      `${API_URL}`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      },
-      requestData
-    );
+    await axios.put(`${API_URL}/${requestData._id}`, requestData, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
   } catch (error) {
     throw error.response?.data?.message || "Failed to update request";
   }

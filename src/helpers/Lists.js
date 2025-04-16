@@ -47,3 +47,5 @@ export const DeviceStatuses = [
 ];
 
 export const RequestStatuses = ["Pending", "Approved", "Rejected", "Completed"];
+
+export const DonationStatuses = ["Pending", "Accepted", "Declined", "Received"];

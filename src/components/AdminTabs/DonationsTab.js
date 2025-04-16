@@ -1,43 +1,49 @@
-import React, { useState } from "react";
-import { Table, Form, Row, Col } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Table, Form, Row, Col, Pagination } from "react-bootstrap";
+import { DonationStatuses, formatDate } from "../../helpers";
+import { getDonations } from "../../api/donationApi";
 
 const DonationsTab = () => {
   const [donations, setDonations] = useState([]);
-  const [selectedDevice, setSelectedDevice] = useState("All");
   const [selectedStatus, setSelectedStatus] = useState("All");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   // Get unique values for filtering
-  const uniqueDeviceTypes = [
-    "All",
-    ...new Set(donations.map((d) => d.deviceType)),
-  ];
-  const uniqueStatuses = ["All", ...new Set(donations.map((d) => d.status))];
+  const uniqueStatuses = ["All", ...DonationStatuses];
 
   // Apply filters
   const filteredDonations = donations.filter(
-    (donation) =>
-      (selectedDevice === "All" || donation.deviceType === selectedDevice) &&
-      (selectedStatus === "All" || donation.status === selectedStatus)
+    (donation) => selectedStatus === "All" || donation.status === selectedStatus
   );
+
+  // Pagination logic
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = [...filteredDonations].slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+  const totalPages = Math.ceil(filteredDonations.length / itemsPerPage);
+  const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
+
+  useEffect(() => {
+    const fetchDonations = async () => {
+      try {
+        const response = await getDonations();
+        setDonations(response);
+        console.log("Fetched donations:", response);
+      } catch (error) {
+        console.error("Error fetching donations:", error);
+      }
+    };
+
+    fetchDonations();
+  }, []);
 
   return (
     <div>
       <Row className="mb-3">
-        <Col md={6}>
-          <Form.Group>
-            <Form.Label>Filter by Device Type</Form.Label>
-            <Form.Select
-              value={selectedDevice}
-              onChange={(e) => setSelectedDevice(e.target.value)}
-            >
-              {uniqueDeviceTypes.map((type) => (
-                <option key={type} value={type}>
-                  {type}
-                </option>
-              ))}
-            </Form.Select>
-          </Form.Group>
-        </Col>
         <Col md={6}>
           <Form.Group>
             <Form.Label>Filter by Status</Form.Label>
@@ -60,33 +66,34 @@ const DonationsTab = () => {
         <thead>
           <tr>
             <th>Status</th>
-            <th>Donor</th>
+            <th>Donor Name</th>
             <th>Company</th>
+            <th>Job Title</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Date</th>
             <th>Donation Type</th>
-            <th>Device Type</th>
-            <th>Make</th>
-            <th>Model</th>
-            <th>Age</th>
-            <th>Condition</th>
+            <th>Amount</th>
+            <th>Devices</th>
             <th>Other Info</th>
           </tr>
         </thead>
         <tbody>
-          {filteredDonations.length > 0 ? (
-            filteredDonations.map((donation) => (
+          {currentItems.length > 0 ? (
+            currentItems.map((donation) => (
               <tr key={donation._id}>
                 <td>{donation.status}</td>
                 <td>
-                  {donation.donationId.userId.firstName}{" "}
-                  {donation.donationId.userId.lastName}
+                  {donation.userId.firstName} {donation.userId.lastName}
                 </td>
-                <td>{donation.donationId.userId.companyName}</td>
-                <td>{donation.donationId.donationType}</td>
-                <td>{donation.deviceType}</td>
-                <td>{donation.make}</td>
-                <td>{donation.model}</td>
-                <td>{donation.age}</td>
-                <td>{donation.condition}</td>
+                <td>{donation.userId.companyName}</td>
+                <td>{donation.userId.jobTitle}</td>
+                <td>{donation.userId.email}</td>
+                <td>{donation.userId.phone}</td>
+                <td>{formatDate(donation.createdAt)}</td>
+                <td>{donation.donationType}</td>
+                <td>{donation.amount ? donation.amount : ""}</td>
+                <td>{donation.devices.length}</td>
                 <td>{donation.otherInformation}</td>
               </tr>
             ))
@@ -99,6 +106,37 @@ const DonationsTab = () => {
           )}
         </tbody>
       </Table>
+      {totalPages > 1 && (
+        <Pagination className="justify-content-center">
+          <Pagination.First
+            onClick={() => setCurrentPage(1)}
+            disabled={currentPage === 1}
+          />
+          <Pagination.Prev
+            onClick={() => setCurrentPage(currentPage - 1)}
+            disabled={currentPage === 1}
+          />
+
+          {[...Array(totalPages).keys()].map((page) => (
+            <Pagination.Item
+              key={page + 1}
+              active={page + 1 === currentPage}
+              onClick={() => handlePageChange(page + 1)}
+            >
+              {page + 1}
+            </Pagination.Item>
+          ))}
+
+          <Pagination.Next
+            onClick={() => setCurrentPage(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          />
+          <Pagination.Last
+            onClick={() => setCurrentPage(totalPages)}
+            disabled={currentPage === totalPages}
+          />
+        </Pagination>
+      )}
     </div>
   );
 };

@@ -5,20 +5,20 @@ import RequestsTab from "./RequestsTab";
 import DevicesTab from "./DevicesTab";
 
 const AdminTabs = () => {
-  const [key, setKey] = useState("devices");
+  const [key, setKey] = useState("requests");
 
   return (
     <div className="container mt-4">
       <Tabs activeKey={key} onSelect={(k) => setKey(k)} className="mb-3">
-        <Tab eventKey="devices" title="Devices">
-          <DevicesTab />
+        <Tab eventKey="requests" title="Requests">
+          <RequestsTab />
         </Tab>
         <Tab eventKey="donations" title="Donations">
           <DonationsTab />
         </Tab>
 
-        <Tab eventKey="requests" title="Requests">
-          <RequestsTab />
+        <Tab eventKey="devices" title="Devices">
+          <DevicesTab />
         </Tab>
       </Tabs>
     </div>

@@ -110,7 +110,7 @@ function CorporateDonationForm({ handleClose }) {
       const donationPayload = {
         user: { ...userData, address: Object.values(addressData).join(", ") },
         donation: {
-          donationType: "device",
+          donationType: "devices",
           devices: devicesData,
           otherInformation: donationData.otherInformation,
         },

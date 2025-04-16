@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const API_URL = "http://localhost:5000/api/donations";
+const token = localStorage.getItem("token");
 
 export const submitDonation = async (donationData) => {
   try {
@@ -11,7 +12,9 @@ export const submitDonation = async (donationData) => {
 };
 export const getDonations = async () => {
   try {
-    const response = await axios.get(`${API_URL}/donations`);
+    const response = await axios.get(`${API_URL}/donations`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return response.data;
   } catch (error) {
     throw error.response?.data?.message || "Failed to fetch donations";
@@ -19,7 +22,9 @@ export const getDonations = async () => {
 };
 export const getDonationById = async (id) => {
   try {
-    const response = await axios.get(`${API_URL}/donations/${id}`);
+    const response = await axios.get(`${API_URL}/donations/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return response.data;
   } catch (error) {
     throw error.response?.data?.message || "Failed to fetch donation";
@@ -27,14 +32,22 @@ export const getDonationById = async (id) => {
 };
 export const updateDonation = async (id, donationData) => {
   try {
-    await axios.put(`${API_URL}/donations/${id}`, donationData);
+    await axios.put(
+      `${API_URL}/donations/${id}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      },
+      donationData
+    );
   } catch (error) {
     throw error.response?.data?.message || "Failed to update donation";
   }
 };
 export const deleteDonation = async (id) => {
   try {
-    await axios.delete(`${API_URL}/donations/${id}`);
+    await axios.delete(`${API_URL}/donations/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
   } catch (error) {
     throw error.response?.data?.message || "Failed to delete donation";
   }

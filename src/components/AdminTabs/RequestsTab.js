@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Table, Form, Row, Col, Pagination } from "react-bootstrap";
 import { RequestStatuses, formatDate } from "../../helpers";
 import { getRequests } from "../../api/requestApi";
+import EditButton from "../Buttons/EditButton";
+import DeleteButton from "../Buttons/DeleteButton";
 
 const RequestsTab = () => {
   const [requests, setRequests] = useState([]);
@@ -24,17 +26,16 @@ const RequestsTab = () => {
   );
   const totalPages = Math.ceil(filteredRequests.length / itemsPerPage);
   const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
+  const fetchRequests = async () => {
+    try {
+      const response = await getRequests();
+      setRequests(response);
+      console.log("Fetched requests:", response);
+    } catch (error) {
+      console.error("Error fetching requests:", error);
+    }
+  };
   useEffect(() => {
-    const fetchRequests = async () => {
-      try {
-        const response = await getRequests();
-        setRequests(response);
-        console.log("Fetched requests:", response);
-      } catch (error) {
-        console.error("Error fetching requests:", error);
-      }
-    };
-
     fetchRequests();
   }, []);
 
@@ -70,6 +71,9 @@ const RequestsTab = () => {
             <th>Device Type</th>
             <th>Purpose</th>
             <th>Reason</th>
+            <th>Notes</th>
+            <th>Edit</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -86,6 +90,21 @@ const RequestsTab = () => {
                 <td>{request.deviceType}</td>
                 <td>{request.useCase}</td>
                 <td>{request.reason}</td>
+                <td>{request.notes}</td>
+                <td>
+                  <EditButton
+                    entityName="request"
+                    entityData={request}
+                    refresh={fetchRequests}
+                  />
+                </td>
+                <td>
+                  <DeleteButton
+                    entityName="request"
+                    entityId={request._id}
+                    refresh={fetchRequests}
+                  />
+                </td>
               </tr>
             ))
           ) : (

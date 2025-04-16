@@ -14,24 +14,24 @@ const DevicesTab = () => {
   const uniqueStatuses = ["All", ...DeviceStatuses];
 
   // Apply filters
-  const filteredDonations = devices.filter(
-    (donation) =>
-      (selectedDevice === "All" || donation.deviceType === selectedDevice) &&
-      (selectedStatus === "All" || donation.status === selectedStatus)
+  const filteredDevices = devices.filter(
+    (device) =>
+      (selectedDevice === "All" || device.deviceType === selectedDevice) &&
+      (selectedStatus === "All" || device.status === selectedStatus)
   );
 
   // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = [...filteredDonations].slice(
+  const currentItems = [...filteredDevices].slice(
     indexOfFirstItem,
     indexOfLastItem
   );
-  const totalPages = Math.ceil(filteredDonations.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredDevices.length / itemsPerPage);
   const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
 
   useEffect(() => {
-    const fetchDonations = async () => {
+    const fetchDevices = async () => {
       try {
         const response = await getDevices();
         setDevices(response);
@@ -41,7 +41,7 @@ const DevicesTab = () => {
       }
     };
 
-    fetchDonations();
+    fetchDevices();
   }, []);
 
   return (
@@ -84,40 +84,40 @@ const DevicesTab = () => {
         <thead>
           <tr>
             <th>Status</th>
-            <th>Donor</th>
-            <th>Company</th>
-            <th>Donation Type</th>
+
             <th>Device Type</th>
             <th>Make</th>
             <th>Model</th>
             <th>Age</th>
             <th>Condition</th>
-            <th>Other Info</th>
+            <th>Donor</th>
+            <th>Company</th>
+            <th>Notes</th>
           </tr>
         </thead>
         <tbody>
           {currentItems.length > 0 ? (
-            currentItems.map((donation) => (
-              <tr key={donation._id}>
-                <td>{donation.status}</td>
+            currentItems.map((device) => (
+              <tr key={device._id}>
+                <td>{device.status}</td>
+                <td>{device.deviceType}</td>
+                <td>{device.make}</td>
+                <td>{device.model}</td>
+                <td>{device.age}</td>
+                <td>{device.condition}</td>
+
                 <td>
-                  {donation.donationId.userId.firstName}{" "}
-                  {donation.donationId.userId.lastName}
+                  {device.donationId.userId.firstName}{" "}
+                  {device.donationId.userId.lastName}
                 </td>
-                <td>{donation.donationId.userId.companyName}</td>
-                <td>{donation.donationId.donationType}</td>
-                <td>{donation.deviceType}</td>
-                <td>{donation.make}</td>
-                <td>{donation.model}</td>
-                <td>{donation.age}</td>
-                <td>{donation.condition}</td>
-                <td>{donation.otherInformation}</td>
+                <td>{device.donationId.userId.companyName}</td>
+                <td>{device.notes}</td>
               </tr>
             ))
           ) : (
             <tr>
               <td colSpan="10" className="text-center">
-                No donations match the filters.
+                No devices match the filters.
               </td>
             </tr>
           )}
